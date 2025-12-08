@@ -50,6 +50,11 @@ const DigitalTrailmap = () => {
         }
     };
 
+    // Load history when component mounts
+    useEffect(() => {
+        fetchHistory();
+    }, []);
+
     const handleGenerate = async () => {
         if (!meetingName || !transcript) {
             toast.error("Please fill in all fields");
@@ -80,6 +85,8 @@ const DigitalTrailmap = () => {
 
             toast.success("Trailmap generated successfully!");
             setActiveTab("output");
+            // Refresh history to show the newly generated trailmap
+            fetchHistory();
 
         } catch (error) {
             console.error("Error generating trailmap:", error);
