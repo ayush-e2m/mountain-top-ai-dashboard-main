@@ -31,7 +31,7 @@ const DigitalTrailmap = () => {
     const fetchHistory = async () => {
         setIsLoadingHistory(true);
         try {
-            const response = await fetch("/api/webhook/165adb6d-3063-4ed2-95ff-7a8bf8b360af");
+            const response = await fetch("https://mountaintop.app.n8n.cloud/webhook/165adb6d-3063-4ed2-95ff-7a8bf8b360af");
             if (!response.ok) throw new Error("Failed to fetch history");
 
             const data = await response.json();
@@ -64,7 +64,7 @@ const DigitalTrailmap = () => {
         setIsGenerating(true);
 
         try {
-            const response = await fetch("/api/webhook/1ba00028-090f-4db8-bca9-c9adc8557cc1", {
+            const response = await fetch("https://mountaintop.app.n8n.cloud/webhook/1ba00028-090f-4db8-bca9-c9adc8557cc1", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

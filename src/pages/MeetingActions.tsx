@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -32,7 +32,7 @@ const MeetingActions = () => {
     const fetchHistory = async () => {
         setIsLoadingHistory(true);
         try {
-            const response = await fetch("/api/webhook/meeting_to_action");
+            const response = await fetch("https://mountaintop.app.n8n.cloud/webhook/meeting_to_action");
             if (!response.ok) throw new Error("Failed to fetch history");
 
             const data = await response.json();
@@ -51,6 +51,11 @@ const MeetingActions = () => {
         }
     };
 
+    // Load history when component mounts
+    useEffect(() => {
+        fetchHistory();
+    }, []);
+
     const handleGenerate = async () => {
         if (!companyName || !transcript || !email) {
             toast.error("Please fill in all fields");
@@ -60,7 +65,7 @@ const MeetingActions = () => {
         setIsGenerating(true);
 
         try {
-            const response = await fetch("/api/webhook/1d80ee94-9c02-4fba-8aec-112894af0fee", {
+            const response = await fetch("https://mountaintop.app.n8n.cloud/webhook/1d80ee94-9c02-4fba-8aec-112894af0fee", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,6 +83,8 @@ const MeetingActions = () => {
 
             toast.success(`Action items generated and sent to ${email}`);
             setActiveTab("output");
+            // Refresh history to show the newly generated action items
+            fetchHistory();
 
         } catch (error) {
             console.error("Error generating action items:", error);
