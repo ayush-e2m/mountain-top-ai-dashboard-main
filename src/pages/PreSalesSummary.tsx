@@ -30,12 +30,12 @@ const PreSalesSummary = () => {
     const formatUrl = (url: string): string => {
         const trimmed = url.trim();
         if (!trimmed) return trimmed;
-        
+
         // If it already has http:// or https://, return as is
         if (/^https?:\/\//i.test(trimmed)) {
             return trimmed;
         }
-        
+
         // Otherwise, add https://
         return `https://${trimmed}`;
     };
@@ -43,12 +43,12 @@ const PreSalesSummary = () => {
     const submitSummaryRequest = async () => {
         const trimmedCompanyName = companyName.trim();
         const trimmedUrl = websiteUrl.trim();
-        
+
         if (!trimmedCompanyName) {
             toast.error("Please enter a company name");
             return;
         }
-        
+
         if (!trimmedUrl) {
             toast.error("Please enter a website URL");
             return;
@@ -56,7 +56,7 @@ const PreSalesSummary = () => {
 
         // Format the URL to ensure it has https://
         const formattedUrl = formatUrl(trimmedUrl);
-        
+
         // Basic URL validation
         try {
             new URL(formattedUrl);
@@ -68,9 +68,9 @@ const PreSalesSummary = () => {
         setIsSubmitting(true);
         const urlToSend = formattedUrl;
 
-        const requestPayload = { 
+        const requestPayload = {
             companyName: trimmedCompanyName,
-            websiteUrl: urlToSend 
+            websiteUrl: urlToSend
         };
 
         try {
@@ -91,10 +91,10 @@ const PreSalesSummary = () => {
                 try {
                     responseData = await response.json();
                     // Check various possible response fields
-                    responseMessage = 
-                        responseData?.message || 
-                        responseData?.status || 
-                        responseData?.result || 
+                    responseMessage =
+                        responseData?.message ||
+                        responseData?.status ||
+                        responseData?.result ||
                         responseData?.data?.message ||
                         (response.ok ? "Workflow was started" : "Request failed");
                 } catch (e) {
@@ -118,7 +118,7 @@ const PreSalesSummary = () => {
 
             // Use a more user-friendly message if available
             const displayMessage = responseMessage || "Pre-sales summary request submitted successfully";
-            
+
             toast.success(displayMessage);
             setActiveTab("output");
             setSubmissions((prev) => [
@@ -160,7 +160,7 @@ const PreSalesSummary = () => {
             if (!response.ok) throw new Error("Failed to fetch history");
 
             const data = await response.json();
-            
+
             // Handle different response formats
             let historyData: any[] = [];
             if (Array.isArray(data)) {
@@ -342,11 +342,10 @@ const PreSalesSummary = () => {
                                                         </div>
                                                         <div className="flex items-center gap-2">
                                                             <span
-                                                                className={`text-xs px-2 py-1 rounded-full border ${
-                                                                    entry.status === "success"
+                                                                className={`text-xs px-2 py-1 rounded-full border ${entry.status === "success"
                                                                         ? "border-green-200 bg-green-50 text-green-700"
                                                                         : "border-red-200 bg-red-50 text-red-700"
-                                                                }`}
+                                                                    }`}
                                                             >
                                                                 {entry.status === "success" ? "Success" : "Error"}
                                                             </span>
@@ -413,9 +412,9 @@ const PreSalesSummary = () => {
                                         <div className="text-2xl font-bold text-red-600">{analytics.failed}</div>
                                         <p className="text-xs text-muted-foreground">
                                             Requests that returned an error
-                            </p>
-                        </CardContent>
-                    </Card>
+                                        </p>
+                                    </CardContent>
+                                </Card>
                             </div>
                         </TabsContent>
                     </Tabs>
